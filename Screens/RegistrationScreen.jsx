@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import { StyleSheet, View, TextInput, Text, TouchableOpacity, Image } from "react-native";
+import { StatusBar } from 'expo-status-bar';
+import {
+    StyleSheet, View, TextInput, Text, TouchableOpacity,
+    Image, ImageBackground,
+    TouchableWithoutFeedback,
+    Keyboard, KeyboardAvoidingView, Platform
+} from "react-native";
 import { useFonts, Roboto_400Regular, Roboto_500Medium } from '@expo-google-fonts/roboto';
 
-const Registration = () => {
+const Registration = ({ navigation }) => {
     const [login, setLogin] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -32,50 +38,65 @@ const Registration = () => {
     if (!fontsLoaded) {
         return null;
     }
-    return <View style={{ ...styles.form, marginBottom: isShowKeyboard ? 0 : 0 }}>
-        <View style={styles.imageWrapper}>
-            <Image
-                style={styles.image}
-                source={require('../assets/UserPhoto.jpg')} />
-            <TouchableOpacity style={styles.btnClose}><Image style={styles.imgClose}
-                source={require('../assets/Union.jpg')} /></TouchableOpacity>
-        </View>
-        <Text style={styles.inputTitle}>Registration</Text>
-        <TextInput
-            style={styles.input}
-            placeholder="Login"
-            defaultValue={login}
-            onChangeText={nameHandler}
-            onFocus={() => setIsShowKeyboard(true)}
-        />
-        <TextInput
-            style={styles.input}
-            placeholder="Email"
-            defaultValue={email}
-            onChangeText={emailHandler}
-            onFocus={() => setIsShowKeyboard(true)}
-        />
-        <View style={styles.wrapper}>
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                defaultValue={password}
-                onChangeText={passwordhandler}
-                secureTextEntry={!isShownPass && true}
-                onFocus={() => setIsShowKeyboard(true)}
-            /><TouchableOpacity onPress={shownPass}>
-                {!isShownPass && <Text style={styles.passwordText}>Show</Text>}
-                {isShownPass && <Text style={styles.passwordText}>Hide</Text>}
-            </TouchableOpacity>
-        </View>
-        <TouchableOpacity onPress={onPress} style={styles.button} >
-            <Text style={styles.buttonLabel}>Sign up</Text>
-        </TouchableOpacity><TouchableOpacity><Text style={styles.labelText}>Already have an account? Log in</Text></TouchableOpacity>
-    </View>
+    return (<View style={styles.container}><ImageBackground source={require('../assets/Photo-BG.jpg')} style={styles.bgImage}><TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+            <View style={{ ...styles.form, marginBottom: isShowKeyboard ? 0 : 0 }}>
+                <View style={styles.imageWrapper}>
+                    <Image
+                        style={styles.image}
+                        source={require('../assets/UserPhoto.jpg')} />
+                    <TouchableOpacity style={styles.btnClose}><Image style={styles.imgClose}
+                        source={require('../assets/Union.jpg')} /></TouchableOpacity>
+                </View>
+                <Text style={styles.inputTitle}>Registration</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Login"
+                    defaultValue={login}
+                    onChangeText={nameHandler}
+                    onFocus={() => setIsShowKeyboard(true)}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    defaultValue={email}
+                    onChangeText={emailHandler}
+                    onFocus={() => setIsShowKeyboard(true)}
+                />
+                <View style={styles.wrapper}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Password"
+                        defaultValue={password}
+                        onChangeText={passwordhandler}
+                        secureTextEntry={!isShownPass && true}
+                        onFocus={() => setIsShowKeyboard(true)}
+                    /><TouchableOpacity onPress={shownPass}>
+                        {!isShownPass && <Text style={styles.passwordText}>Show</Text>}
+                        {isShownPass && <Text style={styles.passwordText}>Hide</Text>}
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity onPress={onPress} style={styles.button} >
+                    <Text style={styles.buttonLabel}>Sign up</Text>
+                </TouchableOpacity><TouchableOpacity onPress={() => navigation.navigate("Login")}><Text style={styles.labelText}>Already have an account? Log in</Text></TouchableOpacity>
+            </View>
+            <StatusBar style="auto" /></KeyboardAvoidingView>
+    </TouchableWithoutFeedback ></ImageBackground ></View>)
 }
 
-
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    bgImage: {
+        flex: 1,
+        resizeMode: 'cover',
+        justifyContent: 'flex-end',
+
+    },
     form: {
         position: 'relative',
         borderRadius: 25,
