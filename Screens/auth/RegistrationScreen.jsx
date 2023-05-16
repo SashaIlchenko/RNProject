@@ -6,7 +6,6 @@ import {
     TouchableWithoutFeedback,
     Keyboard, KeyboardAvoidingView, Platform
 } from "react-native";
-import { useFonts, Roboto_400Regular, Roboto_500Medium } from '@expo-google-fonts/roboto';
 
 const RegistrationScreen = ({ navigation }) => {
     const [login, setLogin] = useState('');
@@ -31,12 +30,6 @@ const RegistrationScreen = ({ navigation }) => {
     }
     const shownPass = () => {
         setIsShownPass(p => !p);
-    }
-    let [fontsLoaded] = useFonts({
-        Roboto_400Regular, Roboto_500Medium
-    })
-    if (!fontsLoaded) {
-        return null;
     }
     return (<View style={styles.container}><ImageBackground source={require('../../assets/Photo-BG.jpg')} style={styles.bgImage}><TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>

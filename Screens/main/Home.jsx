@@ -33,7 +33,7 @@ const Home = () => {
                             borderBottomWidth: 0.5,
                         },
                         headerTitleStyle: {
-                            // fontFamily: 'Roboto_500Medium',
+                            fontFamily: 'Roboto_500Medium',
                             fontSize: 17,
                             color: '#212121',
                             paddingVertical: "auto",
