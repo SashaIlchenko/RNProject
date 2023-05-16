@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { useFonts, Roboto_400Regular, Roboto_500Medium } from '@expo-google-fonts/roboto';
 
-const Registration = ({ navigation }) => {
+const RegistrationScreen = ({ navigation }) => {
     const [login, setLogin] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -38,15 +38,15 @@ const Registration = ({ navigation }) => {
     if (!fontsLoaded) {
         return null;
     }
-    return (<View style={styles.container}><ImageBackground source={require('../assets/Photo-BG.jpg')} style={styles.bgImage}><TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    return (<View style={styles.container}><ImageBackground source={require('../../assets/Photo-BG.jpg')} style={styles.bgImage}><TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
             <View style={{ ...styles.form, marginBottom: isShowKeyboard ? 0 : 0 }}>
                 <View style={styles.imageWrapper}>
                     <Image
                         style={styles.image}
-                        source={require('../assets/UserPhoto.jpg')} />
+                        source={require('../../assets/UserPhoto.jpg')} />
                     <TouchableOpacity style={styles.btnClose}><Image style={styles.imgClose}
-                        source={require('../assets/Union.jpg')} /></TouchableOpacity>
+                        source={require('../../assets/Union.jpg')} /></TouchableOpacity>
                 </View>
                 <Text style={styles.inputTitle}>Registration</Text>
                 <TextInput
@@ -190,4 +190,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Registration;
+export default RegistrationScreen;

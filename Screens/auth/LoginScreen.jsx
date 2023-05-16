@@ -18,7 +18,8 @@ const LoginScreen = ({ navigation }) => {
     const passwordhandler = (text) => setPassword(text);
     const onPress = () => {
         if (email.length && password.length) {
-            console.log(email, password)
+            console.log(email, password);
+
         }
         else {
             alert("Please type all fields!")
@@ -36,7 +37,7 @@ const LoginScreen = ({ navigation }) => {
     if (!fontsLoaded) {
         return null;
     }
-    return (<View style={styles.container}><ImageBackground source={require('../assets/Photo-BG.jpg')} style={styles.bgImage}><TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    return (<View style={styles.container}><ImageBackground source={require('../../assets/Photo-BG.jpg')} style={styles.bgImage}><TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}><View style={{ ...styles.form, marginBottom: isShowKeyboard ? 0 : 0 }}>
             <Text style={styles.inputTitle}>Login</Text>
             <TextInput
