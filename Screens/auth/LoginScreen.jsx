@@ -6,6 +6,7 @@ import {
     Keyboard, KeyboardAvoidingView, Platform
 } from "react-native";
 
+
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -18,7 +19,7 @@ const LoginScreen = ({ navigation }) => {
     const onPress = () => {
         if (email.length && password.length) {
             console.log(email, password);
-
+            navigation.navigate('Home');
         }
         else {
             alert("Please type all fields!")

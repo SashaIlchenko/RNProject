@@ -7,21 +7,23 @@ import CreatePostsScreen from './CreatePostsScreen'
 import ProfileScreen from './ProfileScreen'
 
 const MainTab = createBottomTabNavigator()
-const Home = () => {
+const Home = ({ navigation }) => {
     return (
         <View style={styles.container}>
-            <MainTab.Navigator screenOptions={{
-                tabBarShowLabel: false,
-                tabBarStyle: {
-                    borderTopColor: "#212121",
-                    boxShadow: "0 -0.5px 0 rgba(0, 0, 0, 0.3)",
-                    backdropFilter: "blur(13.5914px)",
-                    backgroundColor: "#FFFFFF",
-                    paddingTop: 9,
-                    paddingBottom: 34,
-                    paddingHorizontal: 90,
-                },
-            }}>
+            <MainTab.Navigator screenOptions={
+                {
+                    tabBarShowLabel: false,
+                    tabBarStyle: {
+                        borderTopColor: "#212121",
+                        boxShadow: "0 -0.5px 0 rgba(0, 0, 0, 0.3)",
+                        backdropFilter: "blur(13.5914px)",
+                        backgroundColor: "#FFFFFF",
+                        paddingTop: 9,
+                        paddingBottom: 34,
+                        paddingHorizontal: 90,
+                    },
+                }
+            }>
                 <MainTab.Screen
                     options={{
                         tabBarShowLabel: false,
@@ -39,11 +41,11 @@ const Home = () => {
                             paddingVertical: "auto",
                         },
                         headerRight: () => (
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                                 <MaterialIcons name="logout" size={24} color='#BDBDBD' />
                             </TouchableOpacity>
                         ),
-                        tabBarIcon: ({ focused, color }) => (
+                        tabBarIcon: ({ focused }) => (
                             <Ionicons name="ios-grid-outline" size={24} color='rgba(33, 33, 33, 0.8)' />
                         ),
                     }}
@@ -80,7 +82,7 @@ const Home = () => {
                     }}
                 />
             </MainTab.Navigator>
-        </View>
+        </View >
     )
 }
 const styles = StyleSheet.create({
@@ -89,3 +91,4 @@ const styles = StyleSheet.create({
     },
 })
 export default Home;
+

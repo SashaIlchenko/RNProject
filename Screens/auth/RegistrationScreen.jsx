@@ -18,7 +18,8 @@ const RegistrationScreen = ({ navigation }) => {
     const passwordhandler = (text) => setPassword(text);
     const onPress = () => {
         if (login.length && email.length && password.length) {
-            console.log(login, email, password)
+            console.log(login, email, password);
+            navigation.navigate('Home');
         }
         else {
             alert("Please type all fields!")
