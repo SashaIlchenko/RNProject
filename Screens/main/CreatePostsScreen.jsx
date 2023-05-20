@@ -1,32 +1,90 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TouchableOpacity, Image, TextInput, StyleSheet } from "react-native";
 import { Camera } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
 const CreatePostsScreen = () => {
+    const [hasPermission, setHasPermission] = useState(null);
+    const [cameraRef, setCameraRef] = useState(null);
+    const [type, setType] = useState(Camera.Constants.Type.back);
+    const [photo, setPhoto] = useState('');
+    const [title, setTitle] = useState('');
+    const [location, setLocation] = useState('');
+
+    useEffect(() => {
+        (async () => {
+            const { status } = await Camera.requestCameraPermissionsAsync();
+            await MediaLibrary.requestPermissionsAsync();
+            setHasPermission(status === "granted");
+        })();
+    }, []);
+    if (hasPermission === null) {
+        return <View />;
+    }
+    if (hasPermission === false) {
+        return <Text>No access to camera</Text>;
+    }
+    const titleHandler = (text) => {
+        setTitle(text);
+    }
+    const takePhoto = async () => {
+        if (cameraRef) {
+            const { uri } = await cameraRef.takePictureAsync();
+            await MediaLibrary.createAssetAsync(uri);
+            setPhoto(uri);
+        }
+    }
     return (
         <View style={styles.container}>
-            <Camera style={styles.camera}>
-                <TouchableOpacity style={styles.snap}>
-                    <Image source={require('../../assets/camera.png')} /></TouchableOpacity>
+            <Camera style={styles.camera}
+                type={type}
+                ref={setCameraRef}>
+                <TouchableOpacity
+                    style={styles.flipCamera}
+                    onPress={
+                        () => {
+                            setType(
+                                type === Camera.Constants.Type.back
+                                    ? Camera.Constants.Type.front
+                                    : Camera.Constants.Type.back
+                            );
+                        }
+                    }><Text>Choose camera</Text></TouchableOpacity>
+                <TouchableOpacity onPress={takePhoto}
+                    style={styles.snap}>
+                    <Image source={require('../../assets/camera.png')} />
+                </TouchableOpacity>
+                <View style={styles.takePhotoContainer}>
+                    <Image source={{ uri: photo }}
+                        style={{
+                            borderRadius: 8,
+                            height: 100,
+                            width: 100,
+                        }} />
+                </View>
             </Camera>
             <Text style={styles.cameraTitle}>Download photo</Text>
             <TextInput
                 style={styles.input}
                 placeholder="title"
                 defaultValue="Title..."
-                onChangeText={'#'}
+                onChangeText={titleHandler}
                 onFocus={() => { }}
             />
             <TextInput
                 style={styles.input}
                 placeholder="location"
                 defaultValue="location"
-                onChangeText={'#'}
+                // onChangeText={'#'}
                 onFocus={() => { }}
             />
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonTitle}>Publish</Text>
+            <TouchableOpacity style={!photo ? styles.button : styles.activeBtn}>
+                <Text style={!photo ? styles.buttonTitle : styles.activeTitle} >Publish</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.deleteBtn}>
+            <TouchableOpacity
+                onPress={() => {
+                    setPhoto('');
+                }}
+                style={styles.deleteBtn}>
                 <Image source={require('../../assets/trash.png')} />
             </TouchableOpacity>
         </View>
@@ -56,6 +114,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    flipCamera: {
+        flex: 0.1,
+
+    },
     cameraTitle: {
         color: '#BDBDBD',
         fontFamily: 'Roboto_400Regular',
@@ -63,6 +125,14 @@ const styles = StyleSheet.create({
         marginLeft: 16,
         marginTop: 8,
         marginBottom: 32,
+    },
+    takePhotoContainer: {
+        borderWidth: 1,
+        borderColor: '#fff',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+
     },
     input: {
         fontFamily: 'Roboto_400Regular',
@@ -81,12 +151,25 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#F6F6F6',
+
+    },
+    activeBtn: {
+        height: 50,
+        borderRadius: 100,
+        marginTop: 32,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#FF6C00',
     },
     buttonTitle: {
         fontFamily: 'Roboto_400Regular',
         fontSize: 16,
         color: '#BDBDBD',
-
+    },
+    activeTitle: {
+        fontFamily: 'Roboto_400Regular',
+        fontSize: 16,
+        color: '#fff',
     },
     deleteBtn: {
         height: 40,
