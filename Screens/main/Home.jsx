@@ -57,7 +57,6 @@ const Home = ({ navigation }) => {
                     component={CreatePostsScreen}
                     options={{
                         tabBarShowLabel: false,
-                        headerShown: false,
                         tabBarIcon: ({ focused, color }) => (
                             <Ionicons name="add-outline" size={24} color='#FFFFFF' />
                         ),
@@ -67,6 +66,14 @@ const Home = ({ navigation }) => {
                             marginHorizontal: 42,
                             paddingHorizontal: 13,
                         },
+                        headerTitleStyle: {
+                            fontFamily: 'Roboto_500Medium',
+                            fontSize: 17,
+                            color: '#212121',
+                            paddingVertical: "auto",
+                        },
+                        // tabBarStyle: { display: "none" },
+
 
                     }}
                 />

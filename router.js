@@ -27,6 +27,7 @@ export const useRoute = (isAuth) => {
                 <AuthStack.Screen
                     name="Home"
                     component={Home}
+                    options={{ headerShown: false }}
                 />
             </AuthStack.Navigator>
         )
