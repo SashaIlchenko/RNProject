@@ -1,20 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TouchableOpacity, Image, TextInput, StyleSheet } from "react-native";
 import { Camera } from "expo-camera";
+import * as Location from 'expo-location';
 import * as MediaLibrary from "expo-media-library";
-const CreatePostsScreen = () => {
+const CreatePostsScreen = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState(null);
     const [cameraRef, setCameraRef] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
     const [photo, setPhoto] = useState('');
     const [title, setTitle] = useState('');
-    const [location, setLocation] = useState('');
+    const [location, setLocation] = useState(null);
+    const [locationTitle, setLocationTitle] = useState('');
 
     useEffect(() => {
+        (async () => {
+            const { status } = await Location.requestForegroundPermissionsAsync()
+            if (status !== 'granted') {
+                console.log('Permission to access location was denied')
+            }
+        })();
         (async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
             await MediaLibrary.requestPermissionsAsync();
             setHasPermission(status === "granted");
+
         })();
     }, []);
     if (hasPermission === null) {
@@ -26,12 +35,24 @@ const CreatePostsScreen = () => {
     const titleHandler = (text) => {
         setTitle(text);
     }
+    const locationHandler = (text) => {
+        setLocationTitle(text);
+    }
     const takePhoto = async () => {
         if (cameraRef) {
             const { uri } = await cameraRef.takePictureAsync();
             await MediaLibrary.createAssetAsync(uri);
             setPhoto(uri);
         }
+
+    }
+    const getPublication = async () => {
+        const locationPhoto = await Location.getCurrentPositionAsync();
+        setLocation(locationPhoto);
+        navigation.navigate('PostsScreen', { photo, title, locationTitle });
+        setPhoto('');
+        setTitle('');
+        setLocationTitle('');
     }
     return (
         <View style={styles.container}>
@@ -54,35 +75,40 @@ const CreatePostsScreen = () => {
                     <Image source={require('../../assets/camera.png')} />
                 </TouchableOpacity>
                 <View style={styles.takePhotoContainer}>
-                    <Image source={{ uri: photo }}
+                    {photo && <Image source={{ uri: photo }}
                         style={{
                             borderRadius: 8,
                             height: 100,
                             width: 100,
-                        }} />
+                        }} />}
                 </View>
             </Camera>
             <Text style={styles.cameraTitle}>Download photo</Text>
             <TextInput
                 style={styles.input}
-                placeholder="title"
-                defaultValue="Title..."
+                placeholder="title..."
+                defaultValue={title}
                 onChangeText={titleHandler}
-                onFocus={() => { }}
             />
             <TextInput
                 style={styles.input}
                 placeholder="location"
-                defaultValue="location"
-                // onChangeText={'#'}
-                onFocus={() => { }}
+                defaultValue={locationTitle}
+                onChangeText={locationHandler}
             />
-            <TouchableOpacity style={!photo ? styles.button : styles.activeBtn}>
-                <Text style={!photo ? styles.buttonTitle : styles.activeTitle} >Publish</Text>
+            <TouchableOpacity
+                onPress={getPublication}
+                style={
+                    !title && !photo && !locationTitle
+                        ? styles.button
+                        : styles.activeBtn}>
+                <Text style={!photo && !title && !locationTitle ? styles.buttonTitle : styles.activeTitle} >Publish</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => {
                     setPhoto('');
+                    setTitle('');
+                    setLocationTitle('');
                 }}
                 style={styles.deleteBtn}>
                 <Image source={require('../../assets/trash.png')} />
