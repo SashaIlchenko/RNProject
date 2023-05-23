@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image, TextInput, StyleSheet } from "reac
 import { Camera } from "expo-camera";
 import * as Location from 'expo-location';
 import * as MediaLibrary from "expo-media-library";
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 const CreatePostsScreen = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState(null);
     const [cameraRef, setCameraRef] = useState(null);
@@ -59,7 +60,7 @@ const CreatePostsScreen = ({ navigation }) => {
             <Camera style={styles.camera}
                 type={type}
                 ref={setCameraRef}>
-                <TouchableOpacity
+                {!photo && <TouchableOpacity
                     style={styles.flipCamera}
                     onPress={
                         () => {
@@ -69,19 +70,21 @@ const CreatePostsScreen = ({ navigation }) => {
                                     : Camera.Constants.Type.back
                             );
                         }
-                    }><Text>Choose camera</Text></TouchableOpacity>
+                    }>
+                    <Ionicons name="camera-reverse-outline" size={24} color="#BDBDBD" /></TouchableOpacity>}
                 <TouchableOpacity onPress={takePhoto}
-                    style={styles.snap}>
-                    <Image source={require('../../assets/camera.png')} />
+
+                    style={!photo ? styles.snap : { ...styles.snap, backgroundColor: 'rgba(255, 255, 255, 0.3)' }}>
+                    {!photo ? <Ionicons name="camera-sharp" size={24} color="#BDBDBD" /> :
+                        <Ionicons name="camera-sharp" size={24} color="#FFFFFF" />}
                 </TouchableOpacity>
-                <View style={styles.takePhotoContainer}>
-                    {photo && <Image source={{ uri: photo }}
+                {photo && <View style={styles.takePhotoContainer}>
+                    <Image source={{ uri: photo }}
                         style={{
                             borderRadius: 8,
-                            height: 100,
-                            width: 100,
-                        }} />}
-                </View>
+                            height: 240,
+                        }} />
+                </View>}
             </Camera>
             <Text style={styles.cameraTitle}>Download photo</Text>
             <TextInput
@@ -111,9 +114,9 @@ const CreatePostsScreen = ({ navigation }) => {
                     setLocationTitle('');
                 }}
                 style={styles.deleteBtn}>
-                <Image source={require('../../assets/trash.png')} />
+                <AntDesign name="delete" size={24} color="#BDBDBD" />
             </TouchableOpacity>
-        </View>
+        </View >
     );
 };
 
@@ -125,24 +128,27 @@ const styles = StyleSheet.create({
         paddingVertical: 32,
     },
     camera: {
+        borderRadius: 8,
         height: 240,
         backgroundColor: "#F6F6F6",
-        borderRadius: 8,
         borderColor: "#E8E8E8",
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     snap: {
         backgroundColor: "#FFFFFF",
         width: 60,
         height: 60,
         borderRadius: '50%',
-        alignItems: 'center',
+        position: 'absolute',
+        top: '40%',
+        left: '40%',
+        zIndex: 100,
         justifyContent: 'center',
+        alignItems: 'center',
     },
     flipCamera: {
         flex: 0.1,
-
+        marginLeft: 10,
+        marginTop: 5,
     },
     cameraTitle: {
         color: '#BDBDBD',
@@ -154,11 +160,9 @@ const styles = StyleSheet.create({
     },
     takePhotoContainer: {
         borderWidth: 1,
+        borderRadius: 8,
         borderColor: '#fff',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-
+        height: 240,
     },
     input: {
         fontFamily: 'Roboto_400Regular',
@@ -167,7 +171,7 @@ const styles = StyleSheet.create({
         padding: 16,
         borderBottomWidth: 1,
         borderBottomColor: "#E8E8E8",
-        color: "#E8E8E8",
+        color: "#212121",
         marginBottom: 16,
     },
     button: {
