@@ -1,8 +1,8 @@
 import react, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
-import { SimpleLineIcons, EvilIcons, FontAwesome } from '@expo/vector-icons';
+import { SimpleLineIcons, FontAwesome } from '@expo/vector-icons';
 
-const PostsScreen = ({ route }) => {
+const PostsScreen = ({ route, navigation }) => {
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
@@ -45,17 +45,21 @@ const PostsScreen = ({ route }) => {
                                     size={24}
                                     color="#BDBDBD" />
                                     <Text style={styles.commentsTitle}>0</Text></TouchableOpacity>
-                                <TouchableOpacity style={styles.locationBtn}><SimpleLineIcons
-                                    style={{ marginRight: 10 }}
-                                    name="location-pin"
-                                    size={24}
-                                    color="#BDBDBD"
-                                /><Text style={styles.locationTitle}>{item.locationTitle}</Text></TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => navigation.navigate('MapScreen', {
+                                        location: item.location
+                                    })}
+                                    style={styles.locationBtn}><SimpleLineIcons
+                                        style={{ marginRight: 10 }}
+                                        name="location-pin"
+                                        size={24}
+                                        color="#BDBDBD"
+                                    /><Text style={styles.locationTitle}>{item.locationTitle}</Text></TouchableOpacity>
                             </View>
                         </View>
                     )} />
             </View>
-        </View></>
+        </View ></>
     )
 }
 const styles = StyleSheet.create({

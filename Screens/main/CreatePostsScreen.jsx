@@ -49,7 +49,7 @@ const CreatePostsScreen = ({ navigation }) => {
     const getPublication = async () => {
         const locationPhoto = await Location.getCurrentPositionAsync();
         setLocation(locationPhoto);
-        navigation.navigate('PostsScreen', { photo, title, locationTitle });
+        navigation.navigate('PostsScreen', { photo, title, locationTitle, location });
         setPhoto('');
         setTitle('');
         setLocationTitle('');
