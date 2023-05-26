@@ -72,7 +72,7 @@ const Home = ({ navigation }) => {
                             color: '#212121',
                             paddingVertical: "auto",
                         },
-                        // tabBarStyle: { display: "none" },
+                        tabBarStyle: { display: "none" },
 
 
                     }}

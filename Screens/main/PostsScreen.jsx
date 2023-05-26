@@ -40,10 +40,15 @@ const PostsScreen = ({ route, navigation }) => {
                                     style={styles.postItem} /></View>
                             <Text style={styles.photoTitle}>{item.title}</Text>
                             <View style={styles.infoWrapper}>
-                                <TouchableOpacity style={{ ...styles.locationBtn, marginTop: 11 }}><FontAwesome
-                                    name="comment-o"
-                                    size={24}
-                                    color="#BDBDBD" />
+                                <TouchableOpacity
+                                    onPress={() => navigation.navigate('Comments', {
+                                        postId: item.id,
+                                        photo: item.photo,
+                                    })}
+                                    style={{ ...styles.locationBtn, marginTop: 11 }}><FontAwesome
+                                        name="comment-o"
+                                        size={24}
+                                        color="#BDBDBD" />
                                     <Text style={styles.commentsTitle}>0</Text></TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate('MapScreen', {
