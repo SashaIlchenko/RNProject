@@ -7,7 +7,7 @@ const AuthStack = createStackNavigator()
 import LoginScreen from "./Screens/auth/LoginScreen";
 import RegistrationScreen from "./Screens/auth/RegistrationScreen";
 import Home from "./Screens/main/Home";
-import MapScreen from './Screens/main/MapScreen';
+// import MapScreen from './Screens/main/MapScreen';
 import CommentsScreen from './Screens/main/CommentsScreen';
 
 export const useRoute = (isAuth) => {
@@ -22,11 +22,6 @@ export const useRoute = (isAuth) => {
                 <AuthStack.Screen
                     name="Login"
                     component={LoginScreen}
-                    options={{ headerShown: false }}
-                />
-                <AuthStack.Screen
-                    name="Home"
-                    component={Home}
                     options={{ headerShown: false }}
                 />
             </AuthStack.Navigator>
@@ -50,14 +45,14 @@ export const useRoute = (isAuth) => {
                 name="Comments"
                 component={CommentsScreen}
             />
-            <MainStack.Screen
+            {/* <MainStack.Screen
                 options={{
                     headerTitleAlign: 'center',
                     title: 'MapScreen',
                 }}
                 name="MapScreen"
                 component={MapScreen}
-            />
+            /> */}
         </MainStack.Navigator>
     )
 };

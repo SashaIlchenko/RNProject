@@ -5,9 +5,14 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import PostsScreen from './PostsScreen';
 import CreatePostsScreen from './CreatePostsScreen'
 import ProfileScreen from './ProfileScreen'
-
+import { useDispatch } from "react-redux";
+import { authSignOutUser } from "../../redux/auth/authOperations";
 const MainTab = createBottomTabNavigator()
-const Home = ({ navigation }) => {
+const Home = () => {
+    const dispatch = useDispatch();
+    const signOut = () => {
+        dispatch(authSignOutUser())
+    }
     return (
         <View style={styles.container}>
             <MainTab.Navigator screenOptions={
@@ -41,7 +46,7 @@ const Home = ({ navigation }) => {
                             paddingVertical: "auto",
                         },
                         headerRight: () => (
-                            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                            <TouchableOpacity onPress={signOut}>
                                 <MaterialIcons name="logout" size={24} color='#BDBDBD' />
                             </TouchableOpacity>
                         ),

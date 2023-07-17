@@ -5,21 +5,21 @@ import {
     TouchableWithoutFeedback,
     Keyboard, KeyboardAvoidingView, Platform
 } from "react-native";
-
+import { useDispatch } from "react-redux";
+import { authSignInUser } from "../../redux/auth/authOperations";
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const [isShowKeyboard, setIsShowKeyboard] = useState(false);
     const [isShownPass, setIsShownPass] = useState(false);
-
+    const dispatch = useDispatch();
     const emailHandler = (text) => setEmail(text);
     const passwordhandler = (text) => setPassword(text);
     const onPress = () => {
         if (email.length && password.length) {
             console.log(email, password);
-            navigation.navigate('Home');
+            dispatch(authSignInUser({ email, password }))
         }
         else {
             alert("Please type all fields!")
