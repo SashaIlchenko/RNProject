@@ -5,11 +5,11 @@ import * as Location from 'expo-location';
 import * as MediaLibrary from "expo-media-library";
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { useSelector } from "react-redux";
-// import { selectUserId, selectUserName, selectUserPhoto } from "../../redux/auth/authSelectors";
 import { storage } from "../../firebase/config"
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import { firestore } from "../../firebase/config"
 import { collection, addDoc } from "firebase/firestore";
+
 const CreatePostsScreen = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState(null);
     const [cameraRef, setCameraRef] = useState(null);
@@ -61,6 +61,15 @@ const CreatePostsScreen = ({ navigation }) => {
         const takePhoto = await getDownloadURL(uploadPhoto.ref)
         return takePhoto
     }
+    const getPublication = async () => {
+        const locationPhoto = await Location.getCurrentPositionAsync();
+        setLocation(locationPhoto);
+        uploadPostToServer(photo);
+        navigation.navigate('PostsScreen', { photo, title, locationTitle, location });
+        setPhoto('');
+        setTitle('');
+        setLocationTitle('');
+    }
     const uploadPostToServer = async () => {
         const photo = await uploadPhotoToServer()
         try {
@@ -75,15 +84,6 @@ const CreatePostsScreen = ({ navigation }) => {
         } catch (e) {
             console.error('Error adding document: ', e)
         }
-    }
-    const getPublication = async () => {
-        const locationPhoto = await Location.getCurrentPositionAsync();
-        setLocation(locationPhoto);
-        uploadPostToServer(photo);
-        navigation.navigate('PostsScreen', { photo, title, locationTitle, location });
-        setPhoto('');
-        setTitle('');
-        setLocationTitle('');
     }
     return (
         <View style={styles.container}>

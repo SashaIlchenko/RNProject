@@ -1,10 +1,12 @@
-import react, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import { SimpleLineIcons, FontAwesome } from '@expo/vector-icons';
 import { firestore } from '../../firebase/config'
-import { collection, onSnapshot } from 'firebase/firestore'
+import { collection, onSnapshot } from 'firebase/firestore';
+import { useSelector } from "react-redux";
 const PostsScreen = ({ route, navigation }) => {
     const [posts, setPosts] = useState([]);
+    const { login, userEmail } = useSelector((state => state.auth))
     const getAllPosts = async () => {
         const dbRef = await collection(firestore, 'posts')
         onSnapshot(dbRef, (docSnap) =>
@@ -12,12 +14,10 @@ const PostsScreen = ({ route, navigation }) => {
         )
     }
     useEffect(() => {
-        ; (async () => {
+        (async () => {
             await getAllPosts()
         })()
-
-    }, [route.params])
-    console.log(route.params)
+    }, [])
     return (<>
         <View style={styles.container}>
             <View style={styles.profileWrapper}>
@@ -31,8 +31,8 @@ const PostsScreen = ({ route, navigation }) => {
 
                         source={require('../../assets/UserPhoto.jpg')} /></View>
                 <View style={{ paddingBottom: 30 }}>
-                    <Text style={styles.nameTitle}>Natali Romanova</Text>
-                    <Text style={styles.emailTitle}>email@example.com</Text></View>
+                    <Text style={styles.nameTitle}>{login}</Text>
+                    <Text style={styles.emailTitle}>{userEmail}</Text></View>
             </View>
             <View>
                 <FlatList
