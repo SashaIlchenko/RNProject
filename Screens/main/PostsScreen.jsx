@@ -1,14 +1,20 @@
 import react, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import { SimpleLineIcons, FontAwesome } from '@expo/vector-icons';
-
+import { firestore } from '../../firebase/config'
+import { collection, onSnapshot } from 'firebase/firestore'
 const PostsScreen = ({ route, navigation }) => {
     const [posts, setPosts] = useState([]);
-
+    const getAllPosts = async () => {
+        const dbRef = await collection(firestore, 'posts')
+        onSnapshot(dbRef, (docSnap) =>
+            setPosts(docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        )
+    }
     useEffect(() => {
-        if (route.params) {
-            setPosts(p => [...p, route.params])
-        }
+        ; (async () => {
+            await getAllPosts()
+        })()
 
     }, [route.params])
     console.log(route.params)
