@@ -76,7 +76,7 @@ const ProfileScreen = ({ navigation }) => {
                                                 name="comment-o"
                                                 size={24}
                                                 color="#BDBDBD" />
-                                            <Text style={styles.commentsTitle}>0</Text></TouchableOpacity>
+                                            <Text style={styles.commentsTitle}>{item.comments || 0}</Text></TouchableOpacity>
                                         <TouchableOpacity
                                             onPress={getLikeCount}
                                             style={styles.locationBtn}><SimpleLineIcons

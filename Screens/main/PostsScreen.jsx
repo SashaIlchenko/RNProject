@@ -55,7 +55,7 @@ const PostsScreen = ({ route, navigation }) => {
                                         name="comment-o"
                                         size={24}
                                         color="#BDBDBD" />
-                                    <Text style={styles.commentsTitle}>0</Text></TouchableOpacity>
+                                    <Text style={styles.commentsTitle}>{item.comments || 0}</Text></TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate('MapScreen', {
                                         location: item.location
