@@ -16,6 +16,7 @@ import { MaterialIcons, SimpleLineIcons, FontAwesome } from '@expo/vector-icons'
 import { collection, query, where, onSnapshot } from "firebase/firestore"
 const ProfileScreen = ({ navigation }) => {
     const [posts, setPosts] = useState([])
+    const [likes, setLikes] = useState(0)
     const { userId, login } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const screenWidth = Dimensions.get('window').width
@@ -34,7 +35,9 @@ const ProfileScreen = ({ navigation }) => {
     const signOut = () => {
         dispatch(authSignOutUser())
     }
-
+    const getLikeCount = () => {
+        setLikes(p => p + 1);
+    }
     return (
         <ImageBackground source={require('../../assets/Photo-BG.jpg')} style={styles.bgImg}>
             <View style={styles.container}>
@@ -74,8 +77,11 @@ const ProfileScreen = ({ navigation }) => {
                                                 size={24}
                                                 color="#BDBDBD" />
                                             <Text style={styles.commentsTitle}>0</Text></TouchableOpacity>
-                                        <TouchableOpacity><SimpleLineIcons name="like" size={24} color="black" />
-                                            <Text>0</Text></TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={getLikeCount}
+                                            style={styles.locationBtn}><SimpleLineIcons
+                                                name="like" size={24} color="#BDBDBD" />
+                                            <Text style={styles.commentsTitle}>{likes}</Text></TouchableOpacity>
                                         <TouchableOpacity
                                             onPress={() => navigation.navigate('MapScreen', {
                                                 location: item.location
